@@ -3,54 +3,38 @@ name: React CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - reactproject
   pull_request:
     branches:
-      - main
-
-env:
-  NODE_VERSION: 18
+      - reactproject
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd src
+          npm install
 
-      - name: Run tests
-        run: npm test
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build project
-        run: npm run build
+      - name: Fix react-scripts Permissions
+        run: chmod +x node_modules/.bin/react-scripts
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: build
+      - name: Install Testing Library Dependencies
+        run: npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: build
-          path: build
 
-      - name: Deploy to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
+      - name: Run Tests
+        run: npm test -- --watchAll=false
