@@ -1,21 +1,11 @@
-// src/reportWebVitals.js
-export const loadWebVitals = () =>
-  import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => ({
-    getCLS,
-    getFID,
-    getFCP,
-    getLCP,
-    getTTFB,
-  }));
-
-const reportWebVitals = (onPerfEntry) => {
-  if (onPerfEntry && typeof onPerfEntry === 'function') {
-    loadWebVitals().then((metrics) => {
-      metrics.getCLS(onPerfEntry);
-      metrics.getFID(onPerfEntry);
-      metrics.getFCP(onPerfEntry);
-      metrics.getLCP(onPerfEntry);
-      metrics.getTTFB(onPerfEntry);
+const reportWebVitals = onPerfEntry => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
     });
   }
 };
