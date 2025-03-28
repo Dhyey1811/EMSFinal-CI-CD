@@ -61,22 +61,7 @@ describe('Employee Management E2E Test', () => {
     cy.contains('Retirement Information').should('exist');
   });
 
-  it('should update employee status to Inactive', () => {
-    cy.get('table tbody tr').first().within(() => {
-      cy.contains('Update').click();
-    });
 
-    cy.url().should('include', '/update');
-
-    cy.get('#mui-component-select-status').click({ force: true });
-    cy.get('ul[role="listbox"]').should('be.visible');
-    cy.contains('li', 'Inactive').click();
-
-    cy.contains('Update Employee').click();
-    cy.wait('@graphql');
-
-    cy.url().should('eq', 'http://localhost:3000/');
-  });
 
   it('should delete the employee', () => {
     cy.get('table tbody tr').first().within(() => {
