@@ -29,7 +29,7 @@ Your app is ready to be deployed!
 
 
 
-### `npm run eject`
+### `npm run Project`
 
 **Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
